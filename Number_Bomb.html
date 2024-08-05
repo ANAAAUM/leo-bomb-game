@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字游戏</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* 字体 */
+            padding: 20px; /* 内边距 */
+            text-align: center; /* 居中 */ 
+        }
+        input {
+            width: 150px; /* 设置输入框宽度为200像素 */
+            height: 20px; /* 设置输入框高度为40像素 */
+            font-size: 25px; /* 设置输入框字体大小 */
+            padding: 20px; /* 内边距 */
+            margin: 20px;  /* 外边距 */
+        }
+/* 隐藏Chrome, Safari, Edge, Opera中的数字微调按钮 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+        }
+        button {
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>数字炸弹💣</h1>
+    <p>请输入一个 1 ~ 100 的数字：</p>
+    <input type="number" id="guessInput" min="1" max="100">
+    <button onclick="makeGuess()">GO</button>
+
+    <div id="result"></div>
+
+    <script>
+        let random = Math.floor(Math.random() * 100) + 1; // 生成1到100之间的随机数
+        console.log(random); //控制台输出随机数
+        let a = 0;
+        let b = 100;
+
+        function makeGuess() {
+            const inputElement = document.getElementById('guessInput');
+            const resultElement = document.getElementById('result');
+            const u = parseInt(inputElement.value);
+
+            if (isNaN(u)) {
+                resultElement.textContent = '请输入一个有效的数字';
+                return;
+            }
+
+            if (u > random) {
+                if (u > b) {
+                    resultElement.textContent = '注意范围, 请输入 ' + a + ' ~ ' + b + '之间的数字';
+                } else {
+                    b = u;
+                    resultElement.textContent = `${a} ~ ${b}`;
+                }
+            } else if (u < random) {
+                if (u < a) {
+                    //resultElement.textContent = '注意范围, 请重新输入';
+                    resultElement.textContent = '注意范围, 请输入 ' + a + ' ~ ' + b + '之间的数字';
+                } else {
+                    a = u;
+                    resultElement.textContent = `${a} ~ ${b}`;
+                }
+            } else {
+                const Punish = ['惩罚1', '惩罚2'];
+                const randomPunish = Punish[Math.floor(Math.random() * Punish.length)];
+                resultElement.innerHTML = `&nbsp;<span style="color: red;"> BOOM ! !</span>💥<br>${randomPunish}`;
+
+                random = Math.floor(Math.random() * 100) + 1; // 重置范围
+                a = 0;
+                b = 100;
+            }
+            inputElement.value = ''; // 清空输入框
+            console.log(random); //控制台输出随机数
+        }
+    </script>
+</body>
+</html>
